@@ -1,6 +1,14 @@
 import session from "express-session";
 import createMemoryStore from "memorystore";
-import { users, type User, type InsertUser, type FoodItem, type InsertFoodItem, type Order, type InsertOrder } from "@shared/schema";
+import { 
+  users, 
+  type User, type InsertUser, 
+  type FoodItem, type InsertFoodItem, 
+  type Order, type InsertOrder,
+  type Review, type InsertReview,
+  type SubscriptionPlan, type InsertSubscriptionPlan,
+  type UserSubscription, type InsertUserSubscription
+} from "@shared/schema";
 import { DatabaseStorage } from "./database-storage";
 import { scrypt, randomBytes } from "crypto";
 import { promisify } from "util";
@@ -10,22 +18,54 @@ const scryptAsync = promisify(scrypt);
 
 // Storage interface
 export interface IStorage {
+  // User methods
   getUser(id: number): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   updateUser(id: number, userData: Partial<User>): Promise<User | undefined>;
   
+  // Food item methods
   getAllFoodItems(): Promise<FoodItem[]>;
   getFoodItem(id: number): Promise<FoodItem | undefined>;
   createFoodItem(foodItem: InsertFoodItem): Promise<FoodItem>;
   updateFoodItem(id: number, foodItemData: Partial<FoodItem>): Promise<FoodItem | undefined>;
   deleteFoodItem(id: number): Promise<boolean>;
   
+  // Order methods
   createOrder(order: InsertOrder): Promise<Order>;
   getOrder(id: number): Promise<Order | undefined>;
   getUserOrders(userId: number): Promise<Order[]>;
   getAllOrders(): Promise<Order[]>;
   updateOrderStatus(id: number, status: string): Promise<Order | undefined>;
+  updateOrder(id: number, orderData: Partial<Order>): Promise<Order | undefined>;
+  generateQRCodeForOrder(id: number, qrCode: string): Promise<Order | undefined>;
+  
+  // Review methods
+  createReview(review: any): Promise<any>;
+  getFoodItemReviews(foodItemId: number): Promise<any[]>;
+  getUserReviews(userId: number): Promise<any[]>;
+  getReview(id: number): Promise<any | undefined>;
+  deleteReview(id: number): Promise<boolean>;
+  
+  // Subscription plan methods
+  getAllSubscriptionPlans(): Promise<any[]>;
+  getSubscriptionPlan(id: number): Promise<any | undefined>;
+  createSubscriptionPlan(plan: any): Promise<any>;
+  updateSubscriptionPlan(id: number, planData: any): Promise<any | undefined>;
+  deleteSubscriptionPlan(id: number): Promise<boolean>;
+  
+  // User subscription methods
+  getUserSubscriptions(userId: number): Promise<any[]>;
+  getActiveUserSubscription(userId: number): Promise<any | undefined>;
+  createUserSubscription(subscription: any): Promise<any>;
+  updateUserSubscription(id: number, subscriptionData: any): Promise<any | undefined>;
+  cancelUserSubscription(id: number): Promise<boolean>;
+  deductSubscriptionMeal(userId: number): Promise<boolean>;
+  
+  // Wallet methods
+  getUserWalletBalance(userId: number): Promise<number>;
+  addToWalletBalance(userId: number, amount: number): Promise<User | undefined>;
+  deductFromWalletBalance(userId: number, amount: number): Promise<User | undefined>;
   
   sessionStore: session.Store;
 }
@@ -316,6 +356,111 @@ class MemStorage implements IStorage {
   
   async updateOrderStatus(id: number, status: string): Promise<Order | undefined> {
     console.warn("Using in-memory storage for updateOrderStatus");
+    return undefined;
+  }
+
+  async updateOrder(id: number, orderData: Partial<Order>): Promise<Order | undefined> {
+    console.warn("Using in-memory storage for updateOrder");
+    return undefined;
+  }
+
+  async generateQRCodeForOrder(id: number, qrCode: string): Promise<Order | undefined> {
+    console.warn("Using in-memory storage for generateQRCodeForOrder");
+    return undefined;
+  }
+
+  async createReview(review: any): Promise<any> {
+    console.warn("Using in-memory storage for createReview");
+    return {};
+  }
+
+  async getFoodItemReviews(foodItemId: number): Promise<any[]> {
+    console.warn("Using in-memory storage for getFoodItemReviews");
+    return [];
+  }
+
+  async getUserReviews(userId: number): Promise<any[]> {
+    console.warn("Using in-memory storage for getUserReviews");
+    return [];
+  }
+
+  async getReview(id: number): Promise<any | undefined> {
+    console.warn("Using in-memory storage for getReview");
+    return undefined;
+  }
+
+  async deleteReview(id: number): Promise<boolean> {
+    console.warn("Using in-memory storage for deleteReview");
+    return false;
+  }
+
+  async getAllSubscriptionPlans(): Promise<any[]> {
+    console.warn("Using in-memory storage for getAllSubscriptionPlans");
+    return [];
+  }
+
+  async getSubscriptionPlan(id: number): Promise<any | undefined> {
+    console.warn("Using in-memory storage for getSubscriptionPlan");
+    return undefined;
+  }
+
+  async createSubscriptionPlan(plan: any): Promise<any> {
+    console.warn("Using in-memory storage for createSubscriptionPlan");
+    return {};
+  }
+
+  async updateSubscriptionPlan(id: number, planData: any): Promise<any | undefined> {
+    console.warn("Using in-memory storage for updateSubscriptionPlan");
+    return undefined;
+  }
+
+  async deleteSubscriptionPlan(id: number): Promise<boolean> {
+    console.warn("Using in-memory storage for deleteSubscriptionPlan");
+    return false;
+  }
+
+  async getUserSubscriptions(userId: number): Promise<any[]> {
+    console.warn("Using in-memory storage for getUserSubscriptions");
+    return [];
+  }
+
+  async getActiveUserSubscription(userId: number): Promise<any | undefined> {
+    console.warn("Using in-memory storage for getActiveUserSubscription");
+    return undefined;
+  }
+
+  async createUserSubscription(subscription: any): Promise<any> {
+    console.warn("Using in-memory storage for createUserSubscription");
+    return {};
+  }
+
+  async updateUserSubscription(id: number, subscriptionData: any): Promise<any | undefined> {
+    console.warn("Using in-memory storage for updateUserSubscription");
+    return undefined;
+  }
+
+  async cancelUserSubscription(id: number): Promise<boolean> {
+    console.warn("Using in-memory storage for cancelUserSubscription");
+    return false;
+  }
+
+  async deductSubscriptionMeal(userId: number): Promise<boolean> {
+    console.warn("Using in-memory storage for deductSubscriptionMeal");
+    return false;
+  }
+
+  async getUserWalletBalance(userId: number): Promise<number> {
+    console.warn("Using in-memory storage for getUserWalletBalance");
+    return 0;
+  }
+
+  async addToWalletBalance(userId: number, amount: number): Promise<User | undefined> {
+    console.warn("Using in-memory storage for addToWalletBalance");
+    return undefined;
+  }
+
+  async deductFromWalletBalance(userId: number, amount: number): Promise<User | undefined> {
+    console.warn("Using in-memory storage for deductFromWalletBalance");
     return undefined;
   }
 }
