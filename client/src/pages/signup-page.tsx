@@ -56,8 +56,8 @@ export default function SignupPage() {
         description: `Welcome to MLRIT Bites, ${user.name}!`,
       });
       
-      // Redirect to login page
-      navigate("/auth");
+      // Redirect directly to home page
+      navigate("/");
     } catch (error) {
       toast({
         title: "Registration failed",
