@@ -1,0 +1,243 @@
+🍽️ MLRIT Bites – Web App Documentation
+
+📛 Project Name
+
+MLRIT Bites
+
+🎯 Project Goal
+
+To provide a seamless food ordering platform for MLRIT students. Hostel students get food delivered to their room based on hostel info. Non-hostel students can pre-book and pick up meals from the canteen.
+
+🛠️ Technologies Used
+
+FeatureStack
+
+Frontend
+
+HTML, CSS, JavaScript
+
+Optional Frontend
+
+Bootstrap or Tailwind (for styling)
+
+Backend (Optional)
+
+Spring Boot + MongoDB (or Firebase)
+
+Payment Integration
+
+Razorpay (JS SDK)
+
+Notifications
+
+Firebase Cloud Messaging (Optional)
+
+📁 Folder Structure
+
+bash
+
+CopyEdit
+
+mlrit-bites/
+
+├── index.html               # Login / Splash Page
+
+├── menu.html                # Menu Display Page
+
+├── cart.html                # Cart and Payment Page
+
+├── profile.html             # Student Info & Order History
+
+├── admin.html               # Admin Management Portal
+
+├── css/
+
+│   └── styles.css           # All global styles
+
+├── js/
+
+│   ├── auth.js              # Login/signup logic
+
+│   ├── menu.js              # Load menu
+
+│   ├── cart.js              # Cart and Razorpay logic
+
+│   ├── user.js              # Profile and history
+
+│   ├── admin.js             # Admin features
+
+├── assets/
+
+│   ├── logo.png             # App logo
+
+│   └── splash.png           # Splash screen image
+
+└── README.md                # Project guide
+
+📲 Features
+
+👤 1. User Authentication
+
+Email-based login (only @mlrit.ac.in )
+
+Email validation (basic)
+
+Hostel / Non-hostel user type selection
+
+🏠 2. Home / Splash Page ( index.html )
+
+Branded splash screen with logo and college name
+
+Smooth UI with green and white theme
+
+Redirect to menu page after login
+
+🍴 3. Menu Page ( menu.html )
+
+Fetch menu from backend (or mock JSON)
+
+Display:
+
+Food name
+
+Image
+
+Price
+
+Add to Cart button
+
+Cart counter in header
+
+🛒 4. Cart Page ( cart.html )
+
+Shows selected items with quantity, price
+
+Delivery Options:
+
+Hostel: Input hostel type (Boys/Girls), block, room
+
+Non-hostel: Pickup only
+
+Total bill shown
+
+Razorpay payment integration
+
+Payment success → save order & redirect to tracking
+
+📦 5. Order Tracking
+
+Real-time or simulated status: Preparing , Out for delivery , Delivered
+
+Notifications via alert or toast messages
+
+Timer countdown (optional)
+
+👤 6. Profile Page ( profile.html )
+
+View and update:
+
+Name
+
+Email (non-editable)
+
+Hostel type, block, room number
+
+View order history
+
+Option to reorder
+
+🛠️ 7. Admin Dashboard ( admin.html )
+
+Admin login (static/hardcoded for now)
+
+Features:
+
+Add/Edit/Delete food items
+
+View all incoming orders
+
+Update status (Preparing, Out for Delivery, Delivered)
+
+Toggle availability of food
+
+💳 Payment Integration
+
+Razorpay JavaScript SDK
+
+Triggered on checkout
+
+Backend endpoint (optional) verifies payment
+
+Order is saved only after payment success
+
+🧪 Optional Enhancements
+
+Firebase login and real-time database
+
+Firebase Cloud Messaging (notifications)
+
+QR code for order pickup (for canteen scanning)
+
+Meal plan subscriptions (weekly/monthly)
+
+Food rating & reviews
+
+🎨 UI/UX Design
+
+Theme Colors:
+
+Primary: #2ecc71 (green)
+
+Accent: #ffffff (white)
+
+Typography:
+
+Fonts: Poppins / Roboto
+
+Design Style:
+
+Minimal, modern
+
+Rounded corners
+
+Responsive (mobile-first)
+
+🧠 Backend API Blueprint (for Spring Boot/MongoDB)
+
+EndpointMethodPurpose
+
+/api/auth/login
+
+POST
+
+User login
+
+/api/menu
+
+GET
+
+Fetch all food items
+
+/api/order
+
+POST
+
+Place an order
+
+/api/order/user/:id
+
+GET
+
+Get all orders for user
+
+/api/order/update/:id
+
+PATCH
+
+Admin update order status
+
+/api/menu
+
+POST
+
+Add new food item
