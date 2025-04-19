@@ -56,6 +56,7 @@ export class MemStorage implements IStorage {
 
   private initializeFoodItems() {
     const sampleFoodItems: InsertFoodItem[] = [
+      // Main dishes
       {
         name: "Chicken Biryani",
         description: "Aromatic rice with tender chicken pieces",
@@ -88,6 +89,8 @@ export class MemStorage implements IStorage {
         category: "Snacks",
         available: true
       },
+      
+      // Beverages
       {
         name: "Masala Chai",
         description: "Traditional Indian spiced tea",
@@ -97,11 +100,119 @@ export class MemStorage implements IStorage {
         available: true
       },
       {
+        name: "Thums Up",
+        description: "Strong, carbonated cola drink with a distinctive taste",
+        price: 30,
+        imageUrl: "https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?auto=format&fit=crop&q=80",
+        category: "Beverages",
+        available: true
+      },
+      {
+        name: "Sprite",
+        description: "Crisp, clean, lemon-lime flavored soft drink",
+        price: 30,
+        imageUrl: "https://images.unsplash.com/photo-1625772299918-c2c1693c75cc?auto=format&fit=crop&q=80",
+        category: "Beverages",
+        available: true
+      },
+      {
+        name: "Coca-Cola",
+        description: "Classic cola refreshment",
+        price: 30,
+        imageUrl: "https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&q=80",
+        category: "Beverages",
+        available: true
+      },
+      {
+        name: "Fresh Lime Soda",
+        description: "Refreshing lime juice with soda water",
+        price: 25,
+        imageUrl: "https://images.unsplash.com/photo-1555949366-25d2f9e3fec8?auto=format&fit=crop&q=80",
+        category: "Beverages",
+        available: true
+      },
+      
+      // Snacks
+      {
         name: "Samosa",
         description: "Crispy pastry with spiced potato filling",
         price: 20,
         imageUrl: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&q=80",
         category: "Snacks",
+        available: true
+      },
+      {
+        name: "Veg Puff",
+        description: "Flaky pastry filled with spiced mixed vegetables",
+        price: 25,
+        imageUrl: "https://images.unsplash.com/photo-1631788012442-633a4e518e9c?auto=format&fit=crop&q=80",
+        category: "Snacks",
+        available: true
+      },
+      {
+        name: "Egg Puff",
+        description: "Flaky pastry filled with spiced boiled egg",
+        price: 30,
+        imageUrl: "https://images.unsplash.com/photo-1631788012408-a0d5aea68d3d?auto=format&fit=crop&q=80",
+        category: "Snacks",
+        available: true
+      },
+      {
+        name: "Chicken Puff",
+        description: "Flaky pastry filled with spicy chicken filling",
+        price: 35,
+        imageUrl: "https://images.unsplash.com/photo-1631788012260-21ecbf2c9921?auto=format&fit=crop&q=80",
+        category: "Snacks",
+        available: true
+      },
+      
+      // Chinese items
+      {
+        name: "Veg Hakka Noodles",
+        description: "Stir-fried noodles with mixed vegetables",
+        price: 80,
+        imageUrl: "https://images.unsplash.com/photo-1634864572865-1cf8ff8bd23d?auto=format&fit=crop&q=80",
+        category: "Chinese",
+        available: true
+      },
+      {
+        name: "Chicken Noodles",
+        description: "Stir-fried noodles with chicken and vegetables",
+        price: 100,
+        imageUrl: "https://images.unsplash.com/photo-1600490036275-35f5f1656861?auto=format&fit=crop&q=80",
+        category: "Chinese",
+        available: true
+      },
+      {
+        name: "Veg Manchurian",
+        description: "Vegetable balls in spicy, tangy sauce",
+        price: 80,
+        imageUrl: "https://images.unsplash.com/photo-1626236162544-3312be1adc0a?auto=format&fit=crop&q=80",
+        category: "Chinese",
+        available: true
+      },
+      {
+        name: "Chicken Manchurian",
+        description: "Crispy chicken balls in spicy, tangy sauce",
+        price: 110,
+        imageUrl: "https://images.unsplash.com/photo-1605371924599-2d0365da1ae0?auto=format&fit=crop&q=80",
+        category: "Chinese",
+        available: true
+      },
+      {
+        name: "Fried Rice",
+        description: "Stir-fried rice with vegetables and soy sauce",
+        price: 70,
+        imageUrl: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&q=80",
+        category: "Chinese",
+        available: true
+      },
+      {
+        name: "Chicken Fried Rice",
+        description: "Stir-fried rice with chicken, vegetables and soy sauce",
+        price: 90,
+        imageUrl: "https://images.unsplash.com/photo-1607103058027-e95827a83812?auto=format&fit=crop&q=80",
+        category: "Chinese",
         available: true
       }
     ];
