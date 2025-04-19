@@ -2,7 +2,13 @@ import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth } from "./auth";
-import { insertFoodItemSchema, insertOrderSchema } from "@shared/schema";
+import { 
+  insertFoodItemSchema, 
+  insertOrderSchema, 
+  insertReviewSchema, 
+  insertSubscriptionPlanSchema,
+  insertUserSubscriptionSchema
+} from "@shared/schema";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 

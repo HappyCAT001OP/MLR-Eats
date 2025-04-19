@@ -28,13 +28,69 @@ export class DatabaseStorage implements IStorage {
 
   // User methods
   async getUser(id: number): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
-    return user;
+    try {
+      const [user] = await db.select().from(users).where(eq(users.id, id));
+      return user;
+    } catch (error) {
+      // If error is related to missing columns, it's likely because migrations are still running
+      if ((error as any)?.code === '42703') {
+        console.warn("Column not found error in getUser - this is expected during migration");
+        // Try a simpler query that doesn't include the new fields
+        const result = await db.execute(
+          sql`SELECT id, name, email, password, user_type, hostel_type, hostel_block, room_number, is_admin FROM users WHERE id = ${id}`
+        );
+        if (result.rows.length > 0) {
+          const row = result.rows[0];
+          return {
+            id: row.id,
+            name: row.name,
+            email: row.email,
+            password: row.password,
+            userType: row.user_type,
+            hostelType: row.hostel_type,
+            hostelBlock: row.hostel_block,
+            roomNumber: row.room_number,
+            isAdmin: row.is_admin,
+            walletBalance: 0 // Default value
+          } as User;
+        }
+        return undefined;
+      }
+      throw error;
+    }
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.email, email));
-    return user;
+    try {
+      const [user] = await db.select().from(users).where(eq(users.email, email));
+      return user;
+    } catch (error) {
+      // If error is related to missing columns, it's likely because migrations are still running
+      if ((error as any)?.code === '42703') {
+        console.warn("Column not found error in getUserByEmail - this is expected during migration");
+        // Try a simpler query that doesn't include the new fields
+        const result = await db.execute(
+          sql`SELECT id, name, email, password, user_type, hostel_type, hostel_block, room_number, is_admin FROM users WHERE email = ${email}`
+        );
+        if (result.rows.length > 0) {
+          const row = result.rows[0];
+          return {
+            id: row.id,
+            name: row.name,
+            email: row.email,
+            password: row.password,
+            userType: row.user_type,
+            hostelType: row.hostel_type,
+            hostelBlock: row.hostel_block,
+            roomNumber: row.room_number,
+            isAdmin: row.is_admin,
+            walletBalance: 0 // Default value
+          } as User;
+        }
+        return undefined;
+      }
+      throw error;
+    }
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
