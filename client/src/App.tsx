@@ -8,7 +8,7 @@ import MenuPage from "@/pages/menu-page";
 import CartPage from "@/pages/cart-page";
 import ProfilePage from "@/pages/profile-page";
 import AdminPage from "@/pages/admin-page";
-import SignupPage from "@/pages/signup-page";
+import SignupPage from "./pages/signup-page";
 import { ProtectedRoute } from "./lib/protected-route";
 
 function AppRoutes() {
