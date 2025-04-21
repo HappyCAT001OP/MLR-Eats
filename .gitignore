@@ -1,10 +1,20 @@
-node_modules
-dist
-.DS_Store
-server/public
-vite.config.ts.*
-*.tar.gz
+# Node
+node_modules/
+dist/
 .env
 .vscode/
 .replit
-New Text Document.txt
+*.log
+*.sqlite
+
+# Build
+build/
+client/dist/
+coverage/
+
+# System
+.DS_Store
+Thumbs.db
+
+# Vercel
+.vercel/
