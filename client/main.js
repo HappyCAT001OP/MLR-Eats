@@ -1,4 +1,4 @@
-
+import './style.css';
 // MLR-Eats SPA main.js
 // Basic SPA router and view rendering for login, register, menu, orders, wallet, subscriptions, reviews, admin
 
