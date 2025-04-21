@@ -1,6 +1,8 @@
-import './style.css';
+
 // MLR-Eats SPA main.js
 // Basic SPA router and view rendering for login, register, menu, orders, wallet, subscriptions, reviews, admin
+
+import './style.css';
 
 const API_BASE = import.meta.env.VITE_API_URL;
 
@@ -59,6 +61,7 @@ function render() {
   if (state.error) {
     app.innerHTML += `<div style="color:red;">${state.error}</div>`;
   }
+  let prevLen = app.innerHTML.length;
   switch (state.view) {
     case 'login': renderLogin(); break;
     case 'register': renderRegister(); break;
@@ -69,6 +72,9 @@ function render() {
     case 'reviews': renderReviews(); break;
     case 'admin': renderAdmin(); break;
     default: renderMenu(); break;
+  }
+  if (app.innerHTML.length === prevLen) {
+    renderFallback();
   }
 }
 
@@ -475,14 +481,35 @@ function renderAdmin() {
   // ... rest of renderAdmin ...
 }
 
+// --- Views (implement minimal versions so something always renders) ---
+function renderLogin() {
+  app.innerHTML += `
+    <div class="card">
+      <h2>Login</h2>
+      <input id="login-email" type="email" placeholder="Email" /><br/>
+      <input id="login-password" type="password" placeholder="Password" /><br/>
+      <button onclick="loginUser()">Login</button>
+      <button onclick="goto('register')">Register</button>
+    </div>
+  `;
+}
+
+function renderRegister() {
+  app.innerHTML += `
+    <div class="card">
+      <h2>Register</h2>
+      <input id="reg-name" type="text" placeholder="Name" /><br/>
+      <input id="reg-email" type="email" placeholder="Email" /><br/>
+      <input id="reg-password" type="password" placeholder="Password" /><br/>
+      <button onclick="registerUser()">Register</button>
+      <button onclick="goto('login')">Login</button>
+    </div>
+  `;
+}
+
+function renderFallback() {
+  app.innerHTML += `<div>Something went wrong. Please try again later.</div>`;
+}
+
 // --- Initial load ---
 fetchSession().then(() => render());
-
-// --- Views (to be implemented below) ---
-function renderLogin() { /* ... */ }
-function renderRegister() { /* ... */ }
-function renderFallback() { /* ... */ }
-
-// Patch render to always fallback if nothing is shown
-const origRender = render;
-function render() { /* ... */ }
