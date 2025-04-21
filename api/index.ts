@@ -1,3 +1,4 @@
+
 import express from "express";
 import session from "express-session";
 import cors from "cors";
@@ -15,13 +16,21 @@ app.use(express.json());
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const db = drizzle(pool);
 
+if (!process.env.SESSION_SECRET) {
+  throw new Error("SESSION_SECRET environment variable is required for sessions.");
+}
+
 app.use(session({
   // @ts-ignore
   store: new (require("connect-pg-simple")(session))({ pool }),
   secret: process.env.SESSION_SECRET!,
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false, httpOnly: true, maxAge: 1000 * 60 * 60 * 24 }
+  cookie: {
+    secure: process.env.NODE_ENV === "production", // secure cookies in production
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24
+  }
 }));
 
 app.use(passport.initialize());
