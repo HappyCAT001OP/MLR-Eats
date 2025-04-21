@@ -1,6 +1,5 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
 import { runMigrations } from "./migrations";
 
 const app = express();
@@ -30,41 +29,17 @@ app.use((req, res, next) => {
         logLine = logLine.slice(0, 79) + "…";
       }
 
-      log(logLine);
+      // Optionally log here
     }
   });
 
   next();
 });
 
+// Run migrations and register routes
 (async () => {
-  // Run database migrations
   await runMigrations();
-  
-  const server = await registerRoutes(app);
-
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
-
-    res.status(status).json({ message });
-    throw err;
-  });
-
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
-  }
+  await registerRoutes(app);
 })();
 
-if (require.main === module) {
-  // ONLY start the server if this file is run directly (not when imported by Vercel)
-  const port = 5000;
-  app.listen(port, () => {
-    log(`serving on port ${port}`);
-  });
-}
+export default app;
