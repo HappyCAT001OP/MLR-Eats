@@ -163,15 +163,15 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(orders)
-      .where(eq(orders.userId, userId))
-      .orderBy(orders.createdAt, 'desc');
+      .where(eq(orders.user_id, userId))
+      .orderBy(desc(orders.created_at));
   }
 
   async getAllOrders(): Promise<Order[]> {
     return await db
       .select()
       .from(orders)
-      .orderBy(orders.createdAt, 'desc');
+      .orderBy(desc(orders.created_at));
   }
 
   async updateOrderStatus(id: number, status: string): Promise<Order | undefined> {
@@ -195,7 +195,7 @@ export class DatabaseStorage implements IStorage {
   async generateQRCodeForOrder(id: number, qrCode: string): Promise<Order | undefined> {
     const [updatedOrder] = await db
       .update(orders)
-      .set({ qrCode })
+      .set({ qr_code: qrCode })
       .where(eq(orders.id, id))
       .returning();
     return updatedOrder;
@@ -209,7 +209,7 @@ export class DatabaseStorage implements IStorage {
       .returning();
     
     // Update food item's average rating and count
-    await this.updateFoodItemRating(insertReview.foodItemId);
+    await this.updateFoodItemRating(insertReview.food_item_id);
     
     return review;
   }
@@ -218,16 +218,16 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(reviews)
-      .where(eq(reviews.foodItemId, foodItemId))
-      .orderBy(reviews.createdAt, 'desc');
+      .where(eq(reviews.food_item_id, foodItemId))
+      .orderBy(desc(reviews.created_at));
   }
 
   async getUserReviews(userId: number): Promise<Review[]> {
     return await db
       .select()
       .from(reviews)
-      .where(eq(reviews.userId, userId))
-      .orderBy(reviews.createdAt, 'desc');
+      .where(eq(reviews.user_id, userId))
+      .orderBy(desc(reviews.created_at));
   }
 
   async getReview(id: number): Promise<Review | undefined> {
@@ -249,7 +249,7 @@ export class DatabaseStorage implements IStorage {
       .returning({ id: reviews.id });
     
     // Update food item's average rating and count
-    await this.updateFoodItemRating(review.foodItemId);
+    await this.updateFoodItemRating(review.food_item_id);
     
     return result.length > 0;
   }
@@ -262,14 +262,14 @@ export class DatabaseStorage implements IStorage {
         ratingCount: count(reviews.id)
       })
       .from(reviews)
-      .where(eq(reviews.foodItemId, foodItemId));
+      .where(eq(reviews.food_item_id, foodItemId));
     
     if (result) {
       await db
         .update(foodItems)
         .set({
-          averageRating: result.averageRating || 0,
-          ratingCount: result.ratingCount || 0
+          average_rating: result.averageRating || 0,
+          rating_count: result.ratingCount || 0
         })
         .where(eq(foodItems.id, foodItemId));
     }
@@ -280,7 +280,7 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(subscriptionPlans)
-      .where(eq(subscriptionPlans.isActive, true));
+      .where(eq(subscriptionPlans.is_active, true));
   }
 
   async getSubscriptionPlan(id: number): Promise<SubscriptionPlan | undefined> {
@@ -312,7 +312,7 @@ export class DatabaseStorage implements IStorage {
     // Instead of deleting, set as inactive
     const [updatedPlan] = await db
       .update(subscriptionPlans)
-      .set({ isActive: false })
+      .set({ is_active: false })
       .where(eq(subscriptionPlans.id, id))
       .returning();
     return !!updatedPlan;
@@ -323,8 +323,8 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(userSubscriptions)
-      .where(eq(userSubscriptions.userId, userId))
-      .orderBy(userSubscriptions.createdAt, 'desc');
+      .where(eq(userSubscriptions.user_id, userId))
+      .orderBy(desc(userSubscriptions.created_at));
   }
 
   async getActiveUserSubscription(userId: number): Promise<UserSubscription | undefined> {
@@ -333,8 +333,8 @@ export class DatabaseStorage implements IStorage {
       .from(userSubscriptions)
       .where(
         and(
-          eq(userSubscriptions.userId, userId),
-          eq(userSubscriptions.isActive, true)
+          eq(userSubscriptions.user_id, userId),
+          eq(userSubscriptions.is_active, true)
         )
       );
     return subscription;
@@ -360,7 +360,7 @@ export class DatabaseStorage implements IStorage {
   async cancelUserSubscription(id: number): Promise<boolean> {
     const [updatedSubscription] = await db
       .update(userSubscriptions)
-      .set({ isActive: false })
+      .set({ is_active: false })
       .where(eq(userSubscriptions.id, id))
       .returning();
     return !!updatedSubscription;
@@ -372,20 +372,20 @@ export class DatabaseStorage implements IStorage {
       .from(userSubscriptions)
       .where(
         and(
-          eq(userSubscriptions.userId, userId),
-          eq(userSubscriptions.isActive, true)
+          eq(userSubscriptions.user_id, userId),
+          eq(userSubscriptions.is_active, true)
         )
       );
     
-    if (!subscription || subscription.remainingMeals <= 0) {
+    if (!subscription || subscription.remaining_meals <= 0) {
       return false;
     }
     
     const [updatedSubscription] = await db
       .update(userSubscriptions)
       .set({ 
-        remainingMeals: subscription.remainingMeals - 1,
-        isActive: subscription.remainingMeals > 1 // Deactivate if this is the last meal
+        remaining_meals: subscription.remaining_meals - 1,
+        is_active: subscription.remaining_meals > 1
       })
       .where(eq(userSubscriptions.id, subscription.id))
       .returning();
@@ -396,7 +396,7 @@ export class DatabaseStorage implements IStorage {
   // Wallet methods
   async getUserWalletBalance(userId: number): Promise<number> {
     const user = await this.getUser(userId);
-    return user?.walletBalance || 0;
+    return user?.wallet_balance || 0;
   }
 
   async addToWalletBalance(userId: number, amount: number): Promise<User | undefined> {
@@ -406,7 +406,7 @@ export class DatabaseStorage implements IStorage {
     const [updatedUser] = await db
       .update(users)
       .set({ 
-        walletBalance: (user.walletBalance || 0) + amount 
+        wallet_balance: (user.wallet_balance || 0) + amount 
       })
       .where(eq(users.id, userId))
       .returning();
@@ -416,12 +416,12 @@ export class DatabaseStorage implements IStorage {
 
   async deductFromWalletBalance(userId: number, amount: number): Promise<User | undefined> {
     const user = await this.getUser(userId);
-    if (!user || (user.walletBalance || 0) < amount) return undefined;
+    if (!user || (user.wallet_balance || 0) < amount) return undefined;
     
     const [updatedUser] = await db
       .update(users)
       .set({ 
-        walletBalance: (user.walletBalance || 0) - amount 
+        wallet_balance: (user.wallet_balance || 0) - amount 
       })
       .where(eq(users.id, userId))
       .returning();
